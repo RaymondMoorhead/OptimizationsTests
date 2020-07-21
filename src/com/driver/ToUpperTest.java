@@ -4,21 +4,20 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.Random;
 
-import org.junit.Rule;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInfo;
 
+import com.support.TestTimer;
 import com.testfunc.ToUpper;
 
 class ToUpperTest {
 	
     private StringBuilder[] words;
-    private int samples = 1000000;
+    private final int samples = 1000000;
     private int wordLength = 10;
-    private long startTime;
+    private TestTimer timer = new TestTimer();
 
     @BeforeEach
     public void setUp() {
@@ -33,18 +32,16 @@ class ToUpperTest {
         		// pick a letter a-z, then pick lower or upper case
         		words[i].setCharAt(j, (char)(rand.nextInt(letterRange) + (int)(rand.nextBoolean() ? 'a' : 'A')));
         }
-        startTime = System.currentTimeMillis();
+        timer.startClock();
     }
 
     @AfterEach
     public void tearDown(TestInfo testInfo) {
-    	startTime = System.currentTimeMillis() - startTime;
-    	System.out.println("Test " + testInfo.getDisplayName() + " has run in " + startTime + " milliseconds");
+    	timer.stopClock(testInfo);
     	words = null;
     }
     
 	@Test
-	@DisplayName("testBasicFunctionality")
 	void testBasicFunctionality() {
 		
 		for(char i = 'a'; i < 'z'; ++i) {
@@ -54,16 +51,22 @@ class ToUpperTest {
 	}
 	
 	@Test
-	@DisplayName("testBranchlessFunctionality")
 	void testBranchlessFunctionality() {
 		for(char i = 'a'; i < 'z'; ++i) {
 			assertEquals(i - ToUpper.lowerUpperGap, ToUpper.Branchless(i));
 			assertEquals(i - ToUpper.lowerUpperGap, ToUpper.Branchless((char)(i - ToUpper.lowerUpperGap)));
 		}
 	}
+	
+	@Test
+	void testNativeSpeed() {
+		for(int i = 0; i < words.length; ++i) {
+			for(int j = 0; j < words[i].length(); ++j)
+				words[i].setCharAt(j, ToUpper.Native(words[i].charAt(j)));
+		}
+	}
 
 	@Test
-	@DisplayName("testBasicSpeed")
 	void testBasicSpeed() {
 		for(int i = 0; i < words.length; ++i) {
 			for(int j = 0; j < words[i].length(); ++j)
@@ -72,12 +75,10 @@ class ToUpperTest {
 	}
 	
 	@Test
-	@DisplayName("testBranchlessSpeed")
 	void testBranchlessSpeed() {
 		for(int i = 0; i < words.length; ++i) {
 			for(int j = 0; j < words[i].length(); ++j)
 				words[i].setCharAt(j, ToUpper.Branchless(words[i].charAt(j)));
 		}
 	}
-
 }
