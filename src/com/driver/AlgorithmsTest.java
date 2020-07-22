@@ -41,6 +41,18 @@ class AlgorithmsTest {
 		for(int i = 0; i < numbers.size(); ++i)
 			numbers.set(i, Algorithms.doubleShift(numbers.get(i)));
 	}
+	
+	@Test
+	void testHalveBasic() {
+		for(int i = 0; i < numbers.size(); ++i)
+			numbers.set(i, Algorithms.halveBasic(numbers.get(i)));
+	}
+	
+	@Test
+	void testHalveShift() {
+		for(int i = 0; i < numbers.size(); ++i)
+			numbers.set(i, Algorithms.halveShift(numbers.get(i)));
+	}
 
 	@Test
 	void testSqrtNative() {

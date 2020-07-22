@@ -12,6 +12,14 @@ public class Algorithms {
 	public static int doubleShift(int a) {
 		return a << 1;
 	}
+	
+	public static int halveBasic(int a) {
+		return a / 2;
+	}
+	
+	public static int halveShift(int a) {
+		return a >> 1;
+	}
 
 	public static double sqrtNative(int a) {
 		return Math.sqrt(a);
