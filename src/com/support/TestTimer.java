@@ -5,8 +5,6 @@ import java.util.List;
 
 import org.junit.jupiter.api.TestInfo;
 
-import com.testfunc.ThreadMultArray;
-
 public class TestTimer {
 
 	private long startTimeTrue;
@@ -33,12 +31,16 @@ public class TestTimer {
 		System.out.println("\tCPU Time: " + ((endTimeCPU - startTimeCPU) / 1000000));
 	}
 	
-	public void stopClockThreads(TestInfo testInfo, List<ThreadMultArray> threads) {
+	public void stopClockThreads(TestInfo testInfo, List<TestThread> threads) {
 		endTimeTrue = System.currentTimeMillis();
+		long totalTime = 0;
 		
-		System.out.println("Test " + testInfo.getDisplayName() + " has taken in milliseconds:");
-		System.out.println("\tReal Time: " + (endTimeTrue - startTimeTrue));
-		for(int i = 0; i < threads.size(); ++i)
-		  System.out.println("\t Thread " + Integer.toString(i) + " Time: " + ((threads.get(i).getTime()) / 1000000));
+		System.out.println("Test " + testInfo.getDisplayName() + ":");
+		System.out.println("\tReal Time (Ms): " + (endTimeTrue - startTimeTrue));
+		for(int i = 0; i < threads.size(); ++i) {
+			totalTime += threads.get(i).getTime();
+		    System.out.println('\t' + threads.get(i).toString() + " Time (Ns): " + threads.get(i).getTime());
+		}
+		System.out.println("\t Total Thread Time (Ns): " + totalTime);
 	}
 }
