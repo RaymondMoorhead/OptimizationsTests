@@ -22,6 +22,10 @@ public class ToUpper {
 		return (char)(data + (lowerUpperGap * (('Z' - data) >> 15)));
 	}
 	
+	public static char BranchlessCorrected(char data) {
+		return (char)(data - (lowerUpperGap * (('`' - data) >> 15) * ((data - '{') >> 15)));
+	}
+	
 	public static char Native(char data) {
 		return Character.toUpperCase(data);
 	}
